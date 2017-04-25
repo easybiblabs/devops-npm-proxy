@@ -1,0 +1,20 @@
+version: '2'
+
+services:
+  npm-proxy:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    container_name: npm-proxy
+    ports:
+      - 80:4873
+    volumes:
+       - /npmproxy/storage
+    environment:
+      - NPMPROXY_TCP_PORT=4873
+      - OAUTH_ORG
+      - OAUTH_CLIENT_ID
+      - OAUTH_CLIENT_SECRET
+      - ADMIN_HASH
+      - OPSWORKS_HASH
+      - TRAVIS_CI_HASH

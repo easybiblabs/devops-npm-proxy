@@ -1,0 +1,42 @@
+## THIS FILE IS MANAGED BY CHEF !
+## ALL CHANGES WILL BE LOST !
+
+auth:
+  github:
+    org: process.env.OAUTH_ORG
+    cache-ttl-ms: 60000
+    client-id: process.env.OAUTH_CLIENT_ID
+    client-secret: process.env.OAUTH_CLIENT_SECRET
+
+storage: /npmproxy/storage
+
+users:
+  admin:
+    password: process.env.ADMIN_HASH
+  opsworks:
+    password: process.env.OPSWORKS_HASH
+  travis-ci:
+    password: process.env.TRAVIS_CI_HASH
+
+uplinks:
+  npmjs:
+    url: https://registry.npmjs.org/
+
+packages:
+  '@*/*':
+    access: admin $all opsworks travis-ci
+    publish: admin $authenticated opsworks travis-ci
+    proxy: npmjs
+
+  '**':
+    access: admin $all opsworks travis-ci
+    publish: admin $authenticated opsworks travis-ci
+    proxy: npmjs
+
+
+#####################################################################
+# Advanced settings
+#####################################################################
+
+logs:
+  - {type: stdout, format: pretty, level: http}
